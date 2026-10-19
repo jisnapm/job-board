@@ -21,5 +21,6 @@ from jobs import views as v
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('jobs/', v.JobListCreateView.as_view()),
+    path('jobs/<pk>/', v.JobRetrieveUpdateDeleteView.as_view()),
     
 ]

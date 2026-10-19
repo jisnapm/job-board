@@ -26,3 +26,4 @@ class JobsDb(models.Model):
     location = models.CharField(max_length=50)
     posted_date	= models.DateTimeField(auto_now_add=True)
     is_open = models.BooleanField(default=True)
+
