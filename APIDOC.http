@@ -1,0 +1,17 @@
+###
+GET http://127.0.0.1:8000/jobs/
+Accept: application/json
+
+###
+POST http://127.0.0.1:8000/jobs/
+Content-Type: application/json
+
+{
+    "employer" : "Wipro",
+    "title" : "Backend Developer",
+    "description" : "demo",
+    "category" : "software",
+    "experience_level" : "fresher",
+    "location" : "Kochi",
+    "is_open" : true
+}
