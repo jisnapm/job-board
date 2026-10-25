@@ -27,3 +27,18 @@ class JobsDb(models.Model):
     posted_date	= models.DateTimeField(auto_now_add=True)
     is_open = models.BooleanField(default=True)
 
+
+class ApplicationsDb(models.Model):
+    job_id = models.IntegerField()
+    candidate_name = models.CharField(max_length= 50)
+    mobile_no = models.IntegerField()
+    place = models.CharField(max_length= 50)
+    cover_letter = models.TextField()
+    status_choices = (
+        ('pending', 'Pending'),
+        ('shortlisted', 'Shortlisted'),
+        ('rejected', 'Rejected'),
+    )
+    status = models.CharField(max_length=20, choices=status_choices, default="pending")
+    remarks	= models.TextField(null= True)
+    applied_date = models.DateTimeField(auto_now_add= True)

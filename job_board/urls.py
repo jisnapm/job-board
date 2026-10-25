@@ -22,5 +22,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('jobs/', v.JobListCreateView.as_view()),
     path('jobs/<pk>/', v.JobRetrieveUpdateDeleteView.as_view()),
+
+    path('applications/', v.ApplicationListCreateView.as_view()),
+    path('applications/<pk>/', v.ApplicationsRetrieveUpdateDeleteView.as_view()),
+
+    path('applications/<pk>/review/', v.ReviewApplicationView.as_view()),
     
 ]

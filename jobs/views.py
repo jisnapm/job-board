@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from jobs.models import JobsDb
-from jobs.serializer import JobSerializer
+from jobs.models import JobsDb, ApplicationsDb
+from jobs.serializer import JobSerializer, ApplicationsSerializer, ReviewSerializer
 
 # Create your views here.
 class JobListCreateView(APIView):
@@ -40,3 +40,51 @@ class JobRetrieveUpdateDeleteView(APIView):
     def delete(self, request, pk):
         JobsDb.objects.filter(id = pk).delete()
         return Response(data= {"message":"job deleted!"})
+
+class ApplicationListCreateView(APIView):
+    def get(self, request):
+        qs = ApplicationsDb.objects.all()
+        job_instance = ApplicationsSerializer(qs, many= True)
+        return Response(data= job_instance.data)
+
+    def post(self, request):
+        form_data = request.data
+        s_instance = ApplicationsSerializer(data = form_data)
+        if s_instance.is_valid():
+            actual_data = s_instance.validated_data
+            ApplicationsDb.objects.create(**actual_data)
+            return Response(data= {"message": "application posted!"})
+        else:
+            return Response(data= s_instance.errors)
+
+class ApplicationsRetrieveUpdateDeleteView(APIView):
+    def get(self, request, pk):
+        qs = get_object_or_404(ApplicationsDb, id= pk)
+        s_instance = ApplicationsSerializer(qs)
+        return Response(data= s_instance.data)
+
+    def put(self, request, pk):
+        form_data = request.data
+        s_instance = ApplicationsSerializer(data= form_data)
+        if s_instance.is_valid():
+            actual_data = s_instance.validated_data
+            ApplicationsDb.objects.filter(id = pk).update(**actual_data)
+            return Response(data= {"message": "data updated!"})
+        else:
+            return Response(data= s_instance.errors)
+
+    def delete(self, request, pk):
+        ApplicationsDb.objects.filter(id=pk).delete()
+        return Response({"message": "application deleted!"})
+
+
+class ReviewApplicationView(APIView):
+    def put(self, request, pk):
+        form_data = request.data
+        s_instance = ReviewSerializer(data=form_data)
+        if s_instance.is_valid():
+            actual = s_instance.validated_data
+            ApplicationsDb.objects.filter(id=pk).update(**actual)
+            return Response(data= {"message": "Updated!"})
+        else:
+            return Response(data= s_instance.errors)

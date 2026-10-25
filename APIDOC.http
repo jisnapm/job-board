@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://127.0.0.1:8000/jobs/3/
+GET http://127.0.0.1:8000/jobs/4/
 Accept: application/json
 
 ###
@@ -37,3 +37,61 @@ Content-Type: application/json
 ###
 DELETE http://127.0.0.1:8000/jobs/3/
 Accept: application/json
+
+
+
+
+
+
+
+
+
+###
+GET http://127.0.0.1:8000/applications/
+Accept: application/json
+
+###
+POST http://127.0.0.1:8000/applications/
+Content-Type: application/json
+
+{
+    "job_id": 2,
+    "candidate_name": "Jisna",
+    "mobile_no": 9856487423,
+    "place": "Kochi",
+    "cover_letter" : "demo"
+}
+
+###
+GET http://127.0.0.1:8000/applications/2/
+Accept: application/json
+
+###
+PUT http://127.0.0.1:8000/applications//
+Content-Type: application/json
+
+{
+    "job_id": 2,
+    "candidate_name": "Anjana",
+    "mobile_no": 8756487423,
+    "place": "Kochi",
+    "cover_letter" : "demo application"
+}
+
+###
+DELETE http://127.0.0.1:8000/applications/1/
+Accept: application/json
+
+
+
+
+
+
+###
+PUT http://127.0.0.1:8000/applications/2/review/
+Content-Type: application/json
+
+{
+    "status" : "shortlisted",
+    "remarks" : "good"
+}
