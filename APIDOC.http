@@ -67,7 +67,7 @@ GET http://127.0.0.1:8000/applications/2/
 Accept: application/json
 
 ###
-PUT http://127.0.0.1:8000/applications//
+PUT http://127.0.0.1:8000/applications/2/
 Content-Type: application/json
 
 {

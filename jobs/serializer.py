@@ -14,7 +14,7 @@ class JobSerializer(serializers.Serializer):
 class ApplicationsSerializer(serializers.Serializer):
     job_id = serializers.IntegerField()
     candidate_name = serializers.CharField(max_length= 50)
-    mobile_no = serializers.IntegerField()
+    mobile_no = serializers.CharField()
     place = serializers.CharField(max_length= 50)
     cover_letter = serializers.CharField(max_length= 1000)
     status = serializers.ChoiceField(choices= ApplicationsDb.status_choices, default= "pending", read_only= True)
@@ -28,7 +28,7 @@ class ApplicationsSerializer(serializers.Serializer):
         return validate_data
 
 class ReviewSerializer(serializers.Serializer):
-    status = serializers.ChoiceField(choices= ApplicationsDb.status_choices, default= "pending")
+    status = serializers.ChoiceField(choices= ApplicationsDb.status_choices)
     remarks	= serializers.CharField(max_length = 1000)
 
     

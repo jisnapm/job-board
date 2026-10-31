@@ -31,7 +31,7 @@ class JobsDb(models.Model):
 class ApplicationsDb(models.Model):
     job_id = models.IntegerField()
     candidate_name = models.CharField(max_length= 50)
-    mobile_no = models.IntegerField()
+    mobile_no = models.CharField(max_length= 15)
     place = models.CharField(max_length= 50)
     cover_letter = models.TextField()
     status_choices = (

@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from jobs.models import JobsDb, ApplicationsDb
@@ -19,7 +20,7 @@ class JobListCreateView(APIView):
             JobsDb.objects.create(**actualdata)
             return Response(data= {"message":"jobs posted!"})
         else:
-            return Response(data= job_instance.errors)
+            return Response(data= job_instance.errors, status= status.HTTP_400_BAD_REQUEST)
 
 class JobRetrieveUpdateDeleteView(APIView):
     def get(self, request, pk):
@@ -28,19 +29,21 @@ class JobRetrieveUpdateDeleteView(APIView):
         return Response(data= j_instance.data)
 
     def put(self, request, pk):
+        job = get_object_or_404(JobsDb, id=pk)
         form_data = request.data
         j_instance = JobSerializer(data= form_data)
         if j_instance.is_valid():
             actualdata = j_instance.validated_data
-            JobsDb.objects.filter(id = pk).update(**actualdata)
+            JobsDb.objects.filter(id = job.id).update(**actualdata)
             return Response(data= {"message":"job data updated!"})
         else:
-            return Response(data= j_instance.errors)
+            return Response(data= j_instance.errors, status= status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-        JobsDb.objects.filter(id = pk).delete()
+        job = get_object_or_404(JobsDb, id=pk)
+        job.delete()
         return Response(data= {"message":"job deleted!"})
-
+    
 class ApplicationListCreateView(APIView):
     def get(self, request):
         qs = ApplicationsDb.objects.all()
@@ -55,7 +58,7 @@ class ApplicationListCreateView(APIView):
             ApplicationsDb.objects.create(**actual_data)
             return Response(data= {"message": "application posted!"})
         else:
-            return Response(data= s_instance.errors)
+            return Response(data= s_instance.errors, status= status.HTTP_400_BAD_REQUEST)
 
 class ApplicationsRetrieveUpdateDeleteView(APIView):
     def get(self, request, pk):
@@ -64,27 +67,45 @@ class ApplicationsRetrieveUpdateDeleteView(APIView):
         return Response(data= s_instance.data)
 
     def put(self, request, pk):
+        # form_data = request.data
+        # s_instance = ApplicationsSerializer(data= form_data)
+
+        application = get_object_or_404(ApplicationsDb, id= pk)
         form_data = request.data
-        s_instance = ApplicationsSerializer(data= form_data)
+        s_instance = ApplicationsSerializer(application, data= form_data)
         if s_instance.is_valid():
             actual_data = s_instance.validated_data
-            ApplicationsDb.objects.filter(id = pk).update(**actual_data)
+            ApplicationsDb.objects.filter(id = application.id).update(**actual_data)
             return Response(data= {"message": "data updated!"})
         else:
-            return Response(data= s_instance.errors)
+            return Response(data= s_instance.errors, status= status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-        ApplicationsDb.objects.filter(id=pk).delete()
+        # ApplicationsDb.objects.filter(id=pk).delete()
+        # return Response({"message": "application deleted!"})
+        application = get_object_or_404(ApplicationsDb, id=pk)
+        application.delete()
         return Response({"message": "application deleted!"})
 
 
 class ReviewApplicationView(APIView):
+    # def put(self, request, pk):
+        # form_data = request.data
+        # s_instance = ReviewSerializer(data=form_data)
+        # if s_instance.is_valid():
+        #     actual = s_instance.validated_data
+        #     ApplicationsDb.objects.filter(id=pk).update(**actual)
+        #     return Response(data= {"message": "Updated!"})
+        # else:
+        #     return Response(data= s_instance.errors)
+
     def put(self, request, pk):
+        application = get_object_or_404(ApplicationsDb, id=pk)
         form_data = request.data
         s_instance = ReviewSerializer(data=form_data)
         if s_instance.is_valid():
             actual = s_instance.validated_data
-            ApplicationsDb.objects.filter(id=pk).update(**actual)
+            ApplicationsDb.objects.filter(id=application.id).update(**actual)
             return Response(data= {"message": "Updated!"})
         else:
-            return Response(data= s_instance.errors)
+            return Response(data= s_instance.errors, status= status.HTTP_400_BAD_REQUEST)
