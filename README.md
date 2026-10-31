@@ -57,8 +57,8 @@ Relationship: one job can have many applications (linked through `job_id`).
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/<your-username>/job-board-api.git
-   cd job-board-api
+   git clone https://github.com/jisnapm/job-board.git
+   cd job-board
    ```
 
 2. Create and activate a virtual environment:
